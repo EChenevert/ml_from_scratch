@@ -41,7 +41,7 @@ class LinearRegression:
         numerator = RSS/dof_numerator
         denominator = TSS/dof_denominator
         self.f_statistic = numerator/denominator
-        self.p_value = 1 - stats.f.cdf(self.f_statistic, DFN, DFD)
+        self.p_value = 1 - stats.f.cdf(self.f_statistic, dof_numerator, dof_denominator)
 
 
         dof = len(x_train) - weights
