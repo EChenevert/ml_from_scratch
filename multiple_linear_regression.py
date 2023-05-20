@@ -12,19 +12,20 @@ class LinearRegression:
     def __init__(self):
         self.weight_vector = None
         self.bias_term = None
+        self.cov_matrix = None  # This is good because tells how the ind. vars correlate w ea. other
         self.f_statistic = None
         self.t_statistics = None
         self.p_values = None  # from the t_test
         self.p_value_model = None  # from the f_statistic
 
 
-    def fit(self, x_train, y_train):
+    def fit(self, x_train, y_train, tails=2):
         """
 
         NOTE: I invert the matrix, so this will take a while if the number of samples is large
         :param X_train:
         :param y_train:
-        :param classes: default is None, if specified, specify column index within matrix
+        :param tails: default is a 2 tail test
         :return: Nahhhhh
         """
         x_train = np.column_stack((np.ones(len(x_train[:, 0])), x_train))
@@ -43,13 +44,12 @@ class LinearRegression:
         self.f_statistic = numerator/denominator
         self.p_value = 1 - stats.f.cdf(self.f_statistic, dof_numerator, dof_denominator)
 
-
-        dof = len(x_train) - weights
-        mse = RSS / dof  # a.k.a variance of residuals
-        cov_matrix = mse * np.linalg.inv(x_train.T @ x_train)
-        standard_errors = np.sqrt(np.diag(cov_matrix))
-
-        TSS = np.sum((y_train - np.mean(y_train)) ** 2)
+        # Compute t_statistics and assocaited p_values
+        mse = RSS / dof_numerator  # a.k.a variance of residuals
+        self.cov_matrix = mse * np.linalg.inv(x_train.T @ x_train)
+        standard_errors = np.sqrt(np.diag(self.cov_matrix))
+        self.t_statistics = weights / standard_errors  # includes the t_statistic of the bias term
+        self.p_values = tails * (1 - stats.t.cdf(np.abs(self.t_statistics), df=dof_denominator))
 
 
     def predict(self, x_test):
