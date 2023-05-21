@@ -17,6 +17,8 @@ class LinearRegression:
         self.t_statistics = None
         self.p_values = None  # from the t_test
         self.p_value_model = None  # from the f_statistic
+        self.leverage = None  # potential for a sample to influence outcome
+        self.cooks_distance = None  # metric for how much as sample effects the outcome
 
 
     def fit(self, x_train, y_train, tails=2, category=None):
@@ -32,8 +34,8 @@ class LinearRegression:
         if category == None:
             x_train = np.column_stack((np.ones(len(x_train[:, 0])), x_train))
             weights = np.linalg.inv(x_train.T @ x_train) @ (x_train.T @ y_train)
-            self.weight_vector = weights[1:]
-            self.bias_term = np.mean(weights[0])
+            self.weight_vector = weights  # now I will include the bias term in the weight vector (first one)
+            # self.bias_term = np.mean(weights[0])
 
             # Compute f-statistic and associated p_value
             residuals = y_train - np.dot(x_train, weights)
@@ -52,11 +54,33 @@ class LinearRegression:
             standard_errors = np.sqrt(np.diag(self.cov_matrix))
             self.t_statistics = weights / standard_errors  # includes the t_statistic of the bias term
             self.p_values = tails * (1 - stats.t.cdf(np.abs(self.t_statistics), df=dof_denominator))
+
+            # Calculate teh cooks distance
+            self.calculate_cooks_distance(x_train, y_train)
+
         else:
             pass
             # extract categorical column
             # make x_train a dataframe, this will be easier for associating coefficents to var names
             # save the categorical column for future use in the Cook's distance for importance
+
+    def calculate_studentized_residuals(self, x_train, y_train):
+        y_pred = self.predict(x_train)
+        residuals = y_train - y_pred
+        mse = np.sum(residuals**2) / (x_train.shape[0] - x_train.shape[1] - 1)
+        leverage = self.calculate_leverage(x_train)
+        studentized_residuals = residuals / np.sqrt(mse * (1 - leverage))
+        return studentized_residuals
+
+    def calculate_leverage(self, x_train):
+        hat_matrix = x_train @ np.linalg.inv(x_train.T @ x_train) @ x_train.T
+        leverage = np.diagonal(hat_matrix)
+        return leverage
+
+    def calculate_cooks_distance(self, x_train, y_train):
+        leverage = self.calculate_leverage(x_train)
+        studentized_residuals = self.calculate_studentized_residuals(x_train, y_train)
+        self.cooks_distance = (studentized_residuals**2) * leverage / (1 - leverage)
 
     def predict(self, x_test):
         """
@@ -64,7 +88,8 @@ class LinearRegression:
         :param X_test:
         :return: predictions of the target
         """
-        return np.dot(x_test, self.weight_vector) + self.bias_term
+        return np.dot(x_test, self.weight_vector)
+
 
 
 

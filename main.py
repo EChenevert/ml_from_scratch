@@ -13,6 +13,10 @@ print("t stats: ", model.t_statistics)
 print("f_ stat: ", model.f_statistic)
 print("p value from f stat: ", model.p_value)
 print("p_values: ", model.p_values)
+print("cooks distances: ", model.cooks_distance)
+cookie = model.cooks_distance
+print(len(cookie))
+print(type(cookie))
 
 
 

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dc5b540f-cc21-4e3f-8cf2-7dd62dd0c49f" name="Changes" comment="added some basic stats metrics to the MLR">
+    <list default="true" id="dc5b540f-cc21-4e3f-8cf2-7dd62dd0c49f" name="Changes" comment="working on separating categorical variable and cooks distance">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiple_linear_regression.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiple_linear_regression.py" afterDir="false" />
     </list>
@@ -127,7 +127,7 @@
       <option name="presentableId" value="Default" />
       <updated>1684387081783</updated>
       <workItem from="1684387084241" duration="8435000" />
-      <workItem from="1684603744733" duration="6320000" />
+      <workItem from="1684603744733" duration="7824000" />
     </task>
     <task id="LOCAL-00001" summary="simplified the MLR, no need for classes">
       <created>1684603784901</created>
@@ -157,7 +157,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684614098330</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="working on separating categorical variable and cooks distance">
+      <created>1684618290697</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1684618290697</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,20 +175,21 @@
     <MESSAGE value="one prob to fix! added f_stat and associated p_value" />
     <MESSAGE value="fixed typo" />
     <MESSAGE value="added some basic stats metrics to the MLR" />
-    <option name="LAST_COMMIT_MESSAGE" value="added some basic stats metrics to the MLR" />
+    <MESSAGE value="working on separating categorical variable and cooks distance" />
+    <option name="LAST_COMMIT_MESSAGE" value="working on separating categorical variable and cooks distance" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/multiple_linear_regression.py</url>
-          <line>50</line>
+          <line>54</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ml_from_scratch$main.coverage" NAME="main Coverage Results" MODIFIED="1684614067046" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ml_from_scratch$main.coverage" NAME="main Coverage Results" MODIFIED="1684618118957" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
