@@ -28,6 +28,3 @@ for i in range(X.shape[0]):
     new_column[i] = unique_categories[0]  # select the first one. Shuffling each time should ensure some randomness
 
 X_cat = np.hstack((X, new_column))
-
-
-
