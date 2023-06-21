@@ -58,13 +58,28 @@ class LinearRegression:
             self.p_values = tails * (1 - stats.t.cdf(np.abs(self.t_statistics), df=dof_denominator))
 
             # Calculate teh cooks distance
-            self.calculate_cooks_distance(x_train, y_train)
+            self.cooks_distance = self.calculate_cooks_distance(x_train, y_train)
 
         else:
-            categories = np.unique(x_train[:, category])
+            # Hold the unique categorical variables
+            unique_categories = np.unique(x_train[:, category])
+            # just do the linear regression
+            x_train = np.column_stack((np.ones(len(x_train[:, 0])), x_train))
+            weights = np.linalg.inv(x_train.T @ x_train) @ (x_train.T @ y_train)
+            self.weight_vector = weights  # now I will include the bias term in the weight vector (first one)
+
             self.cooks_distance = {}
-            for cat in categories:
-                mask = x_train[:, category] == cat  # idk if this will work.
+            for cat in unique_categories:
+                mask = x_train[:, category] == cat
+                x_cat = x_train[mask]
+                y_cat = y_train[mask]
+
+                # gotta add teh bias term i think
+                x_cat = np.column_stack((np.ones(len(x_cat[:, 0])), x_cat))
+
+                self.cooks_distance[cat] = self.calculate_cooks_distance(x_cat, y_cat)
+
+
 
 
     def calculate_studentized_residuals(self, x_train, y_train):
@@ -83,7 +98,7 @@ class LinearRegression:
     def calculate_cooks_distance(self, x_train, y_train):
         leverage = self.calculate_leverage(x_train)
         studentized_residuals = self.calculate_studentized_residuals(x_train, y_train)
-        self.cooks_distance = (studentized_residuals**2) * leverage / (1 - leverage)
+        return (studentized_residuals**2) * leverage / (1 - leverage)
 
     def predict(self, x_test):
         """

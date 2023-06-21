@@ -19,6 +19,8 @@ cookie = model.cooks_distance
 print(len(cookie))
 print(type(cookie))
 
+# Now do a test for the cooks distance categorical term...
+
 
 
 
