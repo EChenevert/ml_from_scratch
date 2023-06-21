@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.stats as stats
+import pandas as pd
 
 class LinearRegression:
     """
@@ -19,6 +20,7 @@ class LinearRegression:
         self.p_value_model = None  # from the f_statistic
         self.leverage = None  # potential for a sample to influence outcome
         self.cooks_distance = None  # metric for how much as sample effects the outcome
+        self.categorical_importances = None
 
 
     def fit(self, x_train, y_train, tails=2, category=None):
@@ -28,7 +30,7 @@ class LinearRegression:
         :param X_train:
         :param y_train:
         :param tails: default is a 2 tail test
-        :param category: a string of the column name in a dataframe that holds categorical variable
+        :param category: an index of the column that has categorical variables
         :return: Nahhhhh
         """
         if category == None:
@@ -59,10 +61,11 @@ class LinearRegression:
             self.calculate_cooks_distance(x_train, y_train)
 
         else:
-            pass
-            # extract categorical column
-            # make x_train a dataframe, this will be easier for associating coefficents to var names
-            # save the categorical column for future use in the Cook's distance for importance
+            categories = np.unique(x_train[:, category])
+            self.cooks_distance = {}
+            for cat in categories:
+                mask = x_train[:, category] == cat  # idk if this will work.
+
 
     def calculate_studentized_residuals(self, x_train, y_train):
         y_pred = self.predict(x_train)
