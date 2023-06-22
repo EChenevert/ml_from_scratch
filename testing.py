@@ -28,3 +28,14 @@ for i in range(X.shape[0]):
     new_column[i] = unique_categories[0]  # select the first one. Shuffling each time should ensure some randomness
 
 X_cat = np.hstack((X, new_column))
+
+# Now test the categorical option of linear regression
+model2 = LinearRegression()
+model2.fit(X_cat, y, category=2)
+print(model2.weight_vector)
+print(model2.cooks_distance)
+# Now let us calculate the average cooks distance per category (A, B, C):
+print("Mean Cook's Distance Category A:", np.mean(model2.cooks_distance['A']))
+print("Mean Cook's Distance Category B:", np.mean(model2.cooks_distance['B']))
+print("Mean Cook's Distance Category C:", np.mean(model2.cooks_distance['C']))
+# THey all have relatively the same cooks distance! C is the highest though...

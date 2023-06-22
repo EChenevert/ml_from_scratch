@@ -64,22 +64,29 @@ class LinearRegression:
             # Hold the unique categorical variables
             unique_categories = np.unique(x_train[:, category])
             # just do the linear regression
-            x_train = np.column_stack((np.ones(len(x_train[:, 0])), x_train))
+            # Save the categorical column
+            cat_col = x_train[:, category]
+            # Remove the categorical column for calculation purposes
+            x_train = np.delete(x_train, category, axis=1)
+            x_train = np.column_stack((np.ones(len(x_train[:, 0])), x_train)).astype(float)
             weights = np.linalg.inv(x_train.T @ x_train) @ (x_train.T @ y_train)
             self.weight_vector = weights  # now I will include the bias term in the weight vector (first one)
-
+            # Add back the categorical column for per category importance
+            x_train = np.insert(x_train.astype(object), category, cat_col, axis=1)
             self.cooks_distance = {}
             for cat in unique_categories:
                 mask = x_train[:, category] == cat
                 x_cat = x_train[mask]
                 y_cat = y_train[mask]
 
-                # gotta add teh bias term i think
-                x_cat = np.column_stack((np.ones(len(x_cat[:, 0])), x_cat))
+                # remove the categorical column for calculation purposes
+                x_cat = np.delete(x_cat, category, axis=1).astype(float)
+                # got to add the bias term I think
+                # x_cat = np.column_stack((np.ones(len(x_cat[:, 0])), x_cat)).astype(float)
 
                 self.cooks_distance[cat] = self.calculate_cooks_distance(x_cat, y_cat)
-
-
+                # Add back the categorical column
+                # x_cat = np.insert(x_train.astype(object), category, cat_col, axis=1)
 
 
     def calculate_studentized_residuals(self, x_train, y_train):
