@@ -103,6 +103,15 @@ class LinearRegression:
         return leverage
 
     def calculate_cooks_distance(self, x_train, y_train):
+        """
+        Cooks distance is a way to measure the relative influences of a data points on the model.
+        A common metric is if the value is greater than 0.5, then we should investigate that point.
+        If the value is greater than 1, it is most definitely influencing the model.
+
+        :param x_train:
+        :param y_train:
+        :return:
+        """
         leverage = self.calculate_leverage(x_train)
         studentized_residuals = self.calculate_studentized_residuals(x_train, y_train)
         return (studentized_residuals**2) * leverage / (1 - leverage)

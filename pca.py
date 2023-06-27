@@ -6,5 +6,5 @@
 # 4. I should include a derivation of the mathematical logic, following bishop, in Github (mostly as not to myself
 # and coolness factor).
 # 5. I should include an option of "probabilistic PCA", this probably helps with choosing the number of dimensions
-# when reducing dimensionality
+# when reducing dimensionality (But first do the traditional PCA, it is still very useful)
 # ---> But this will need an EM algorithm
